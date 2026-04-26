@@ -5,37 +5,65 @@ A real-time drone detection system based on acoustic signal processing using Dig
 The system processes audio samples and detects drone presence using FIR filtering, energy calculation, and FSM-based decision logic.
 
 System Flow
+
 Microphone (MATLAB)
+
         ↓
+        
 Digital Samples (8-bit)
+
         ↓
+        
 IN_Buffer
+
         ↓
+        
 FIR_Filter
+
         ↓
+        
 Energy_Detector
+
         ↓
+        
 Decision (FSM)
+
         ↓
+        
 Drone Detection Output
 
 MATLAB Part
+
 Purpose
+
 Record audio signal
+
 Convert to digital samples (8-bit signed)
+
 Export binary file for Verilog simulation
 
 Steps
+
 Record audio (Fs = 8 kHz)
+
 Normalize signal
+
 Convert to 8-bit signed
+
 Convert to binary (8-bit)
+
 Save to file
+
 Output File
+
 samples_bin.txt
+
 Example
+
 11110011
+
 00010110
+
 11111101
 
 Verilog Modules
