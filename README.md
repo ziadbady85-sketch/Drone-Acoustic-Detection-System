@@ -85,6 +85,7 @@ Connects all modules:
 Buffer → FIR → Energy → Decision
 
 Testbench
+
 Features
 Generates clock
 Applies reset
@@ -115,4 +116,5 @@ UART interface
 External control integration
 
 Conclusion
+
 A complete digital pipeline for drone detection using acoustic signals, demonstrating core Digital IC Design concepts including filtering, energy analysis, and FSM decision making.
