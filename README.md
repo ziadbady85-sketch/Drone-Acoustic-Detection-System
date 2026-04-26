@@ -1,58 +1,44 @@
 Drone Acoustic Detection System
+
 Overview
 
-A real-time drone detection system based on acoustic signal processing using Digital IC Design.
-The system processes audio samples and detects drone presence using FIR filtering, energy calculation, and FSM-based decision logic.
+This project implements a real-time drone detection system based on acoustic signal processing using Digital IC Design.
+
+The system takes digital audio samples as input, processes them through a filtering and energy detection pipeline, and determines the presence of a drone using an FSM-based decision module.
 
 System Flow
 
-Microphone (MATLAB)
+Audio Samples (MATLAB)
 
         ↓
-        
-Digital Samples (8-bit)
 
-        ↓
-        
 IN_Buffer
 
         ↓
-        
+
 FIR_Filter
 
         ↓
-        
+
 Energy_Detector
 
         ↓
-        
+
 Decision (FSM)
 
         ↓
-        
-Drone Detection Output
+
+There_is_a_Drone
 
 MATLAB Part
 
 Purpose
 
-Record audio signal
+Generate or record audio signal
 
-Convert to digital samples (8-bit signed)
+Convert it to 8-bit signed digital samples
 
-Export binary file for Verilog simulation
-
-Steps
-
-Record audio (Fs = 8 kHz)
-
-Normalize signal
-
-Convert to 8-bit signed
-
-Convert to binary (8-bit)
-
-Save to file
+Export samples in binary format for simulation
 
 Output File
 
@@ -66,83 +52,132 @@ Example
 
 11111101
 
-Verilog Modules
-1. IN_Buffer
-Function
-Stores last 8 samples (shift register)
-Outputs valid signal every 8 samples
-Key Idea
-Sliding window of samples
+Verilog Design
 
-2. FIR_Filter
+IN_Buffer
+
 Function
-Smooths signal using FIR filter
+
+Stores incoming samples using an 8-sample shift register
+
+Outputs samples sequentially
+
+Generates a valid signal every 8 samples
+
+FIR_Filter
+
+Function
+
+Applies an 8-tap FIR filter to the input signal
+
 Equation
+
 y[n] = Σ h[k] * x[n-k]
+
 Coefficients
+
 8, 16, 24, 32, 40, 48, 56, 64
+
 Notes
-Uses shift register + MAC
-Scaling prevents overflow
 
-3. Energy_Detector
+Uses shift register + multiply-accumulate
+
+Output is scaled to avoid overflow
+
+Energy_Detector
+
 Function
-Calculates signal energy over 8 samples
+
+Computes signal energy over a window of 8 samples
+
 Equation
-Energy = Σ (x^2)
-Steps
-Square each sample
-Accumulate
-Output every 8 samples
 
-4. Decision (FSM)
+Energy = Σ (x^2)
+
+Operation
+
+Squares each sample
+
+Accumulates energy
+
+Outputs result every 8 samples
+
+Decision (FSM)
+
 Function
-Detect drone based on energy level
-Threshold
+
+Determines drone presence based on energy level
+
+Condition
+
 50 < Energy < 200
+
 States
+
 IDLE → COUNTING → DETECTED
-Logic
-Requires consecutive valid detections
-Reduces noise and false alarms
+
+Behavior
+
+Moves to COUNTING when energy is within range
+
+Confirms detection after consecutive valid samples
+
+Returns to IDLE when signal disappears
+
 Top Module
+
 Drone_Detect
 
-Connects all modules:
+Connects all modules together
 
-Buffer → FIR → Energy → Decision
+Outputs final detection signal
 
 Testbench
 
 Features
-Generates clock
-Applies reset
+
+Clock generation
+
+Reset control
+
 Reads samples from file
-Feeds system with data
+
+Stimulates the design
+
 File Read
+
 $readmemb("samples_bin.txt", DUT.M1.B_REG);
-Design Specs
+
+Design Specifications
+
 Bit Widths
-Input: 8-bit
-FIR sum: 19-bit
-Energy: 20-bit
-Output: 10-bit
+
+Input: 8-bit signed
+
+FIR internal sum: 19-bit
+
+Energy accumulator: 20-bit
+
+Energy output: 10-bit
+
 Window Size
+
 Buffer: 8 samples
+
 Energy: 8 samples
-Key Features
-Fully RTL (Verilog)
+
+Features
+
+Fully implemented in Verilog (RTL)
+
 Real-time processing
-No AI used
+
 Modular design
-FPGA/ASIC ready
-Future Improvements
-Multi-band FIR (classification)
-Adaptive threshold
-Confidence level output
-UART interface
-External control integration
+
+No AI or external processing
 
 Conclusion
 
-A complete digital pipeline for drone detection using acoustic signals, demonstrating core Digital IC Design concepts including filtering, energy analysis, and FSM decision making.
+This project demonstrates a complete digital pipeline for detecting drone presence using acoustic signals, including buffering, filtering, energy computation, and FSM-based decision making.
+
+This project demonstrates a complete digital pipeline for detecting drone presence using acoustic signals, including buffering, filtering, energy computation, and FSM-based decision making.
