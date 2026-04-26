@@ -1,10 +1,10 @@
-#Drone Acoustic Detection System
-##Overview
+Drone Acoustic Detection System
+Overview
 
 A real-time drone detection system based on acoustic signal processing using Digital IC Design.
 The system processes audio samples and detects drone presence using FIR filtering, energy calculation, and FSM-based decision logic.
 
-##System Flow
+System Flow
 Microphone (MATLAB)
         ↓
 Digital Samples (8-bit)
@@ -19,13 +19,13 @@ Decision (FSM)
         ↓
 Drone Detection Output
 
-##MATLAB Part
+MATLAB Part
 Purpose
 Record audio signal
 Convert to digital samples (8-bit signed)
 Export binary file for Verilog simulation
 
-##Steps
+Steps
 Record audio (Fs = 8 kHz)
 Normalize signal
 Convert to 8-bit signed
@@ -33,21 +33,20 @@ Convert to binary (8-bit)
 Save to file
 Output File
 samples_bin.txt
-
-##Example
+Example
 11110011
 00010110
 11111101
 
-##Verilog Modules
-###1. IN_Buffer
+Verilog Modules
+1. IN_Buffer
 Function
 Stores last 8 samples (shift register)
 Outputs valid signal every 8 samples
 Key Idea
 Sliding window of samples
 
-###2. FIR_Filter
+2. FIR_Filter
 Function
 Smooths signal using FIR filter
 Equation
@@ -58,7 +57,7 @@ Notes
 Uses shift register + MAC
 Scaling prevents overflow
 
-###3. Energy_Detector
+3. Energy_Detector
 Function
 Calculates signal energy over 8 samples
 Equation
@@ -68,7 +67,7 @@ Square each sample
 Accumulate
 Output every 8 samples
 
-###4. Decision (FSM)
+4. Decision (FSM)
 Function
 Detect drone based on energy level
 Threshold
@@ -81,11 +80,11 @@ Reduces noise and false alarms
 Top Module
 Drone_Detect
 
-##Connects all modules:
+Connects all modules:
 
 Buffer → FIR → Energy → Decision
 
-##Testbench
+Testbench
 Features
 Generates clock
 Applies reset
@@ -115,6 +114,5 @@ Confidence level output
 UART interface
 External control integration
 
-##Conclusion
-
+Conclusion
 A complete digital pipeline for drone detection using acoustic signals, demonstrating core Digital IC Design concepts including filtering, energy analysis, and FSM decision making.
